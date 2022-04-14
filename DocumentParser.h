@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 #include "include/rapidjson/document.h"
-#include "porter2_stemmer.h"
+#include "Porter2_Stemmer.h"
 
 using std::cout;
 using std::cin;

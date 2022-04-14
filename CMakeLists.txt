@@ -3,4 +3,4 @@ project(22s_final_proj)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(22s_final_proj main.cpp catch_setup.cpp InvertedFileIndex.cpp InvertedFileIndex.h IndexHandler.cpp IndexHandler.h AVLTree.h DocumentParser.cpp DocumentParser.h porter2_stemmer.h porter2_stemmer.cpp)
+add_executable(22s_final_proj main.cpp catch_setup.cpp InvertedFileIndex.cpp InvertedFileIndex.h IndexHandler.cpp IndexHandler.h AVLTree.h DocumentParser.cpp DocumentParser.h Porter2_Stemmer.h Porter2_Stemmer.cpp)
