@@ -66,10 +66,12 @@ bool DocumentParser::isStopWord(string currentWord) {
     }
     string stopWord;     // stop word
     while (getline(keywordFile, stopWord)) {
+        // needing to remove '\r' because I don't know what or why that keeps popping up
+        // it's preventing the comparison between currentWord and stopWord
         stopWord.erase(remove(stopWord.begin(), stopWord.end(), '\r'), stopWord.end());
-        if (currentWord == stopWord) {
+        if (currentWord == stopWord) {      // if currentWord == stopWord
             keywordFile.close();
-            return true;
+            return true;        // return true
         }
     }
     keywordFile.close();
