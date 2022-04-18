@@ -51,9 +51,12 @@ void DocumentParser::parser(string splitWords) {            // parser function
                 lowerCaseLetters = lowerCaseLetters + character;    // include only characters from a-z
             }
         }
-        if ((lowerCaseLetters != "") && (isStopWord(lowerCaseLetters) == false)) {     // if the currentWord is not a stop word
+        if ((!lowerCaseLetters.empty()) && !isStopWord(lowerCaseLetters)) {     // if the currentWord is not a stop word
             Porter2Stemmer::stem(lowerCaseLetters);      // remove any stemming from the word
-            blogWords.push_back(lowerCaseLetters);          // push the currentWord into the blogWords vector
+            // blogWords.push_back(lowerCaseLetters);          // push the currentWord into the blogWords vector
+            // if pass AVLTree here, pass by reference
+            // TODO - don't hard code the file
+            indexTree.insertNode(lowerCaseLetters).emplace_back("blogs_0000001.json");
         }
         splitWords.erase(0, length + space_delimiter.length());
     }

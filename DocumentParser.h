@@ -12,6 +12,7 @@
 #include <string>
 #include "include/rapidjson/document.h"
 #include "Porter2_Stemmer.h"
+#include "AVLTree.h"
 
 using std::cout;
 using std::cin;
@@ -19,11 +20,15 @@ using std::string;
 using std::ifstream;
 using std::ostream;
 using std::remove;
+using std::vector;
 using std::endl;
 
 class DocumentParser {
+//private:
+    //AVLTree<string, vector<string>> indexTree;
 
 public:
+    AVLTree<string, vector<string>> indexTree;
     std::vector<string> blogWords;
 
     DocumentParser(string);
