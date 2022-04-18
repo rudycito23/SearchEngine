@@ -4,7 +4,11 @@
 
 #include "DocumentParser.h"
 
-DocumentParser::DocumentParser(string fileName) {
+DocumentParser::DocumentParser() {
+    readStopWords();
+}
+
+void DocumentParser::parse(const string &fileName) {            // parser function
     // declare the document object
     rapidjson::Document doc;
 
@@ -29,16 +33,9 @@ DocumentParser::DocumentParser(string fileName) {
     for (auto &v : doc["entities"]["organizations"].GetArray ()) {
         cout << "Organization(s): " <<  v["name"].GetString() << endl;      // prints Organization's name
     }
-    string wordsFromBlog = doc["text"].GetString();
-        cout << "Words: " << wordsFromBlog << endl;         // prints the words from the actual blog
-    parser(wordsFromBlog);
-    cout << " " << endl;
-    for (auto word : blogWords) {
-        cout << word << endl;
-    }
-}
+    string splitWords = doc["text"].GetString();
+    cout << "Words: " << splitWords << endl;         // prints the words from the actual blog
 
-void DocumentParser::parser(string splitWords) {            // parser function
     string space_delimiter = " ";           // space is the delimiter
     size_t length = 0;     // size_t assures the position will never be negative
     while ((length = splitWords.find(space_delimiter)) != string::npos) {
@@ -56,13 +53,23 @@ void DocumentParser::parser(string splitWords) {            // parser function
             // blogWords.push_back(lowerCaseLetters);          // push the currentWord into the blogWords vector
             // if pass AVLTree here, pass by reference
             // TODO - don't hard code the file
-            indexTree.insertNode(lowerCaseLetters).emplace_back("blogs_0000001.json");
+            handler.insert(lowerCaseLetters, fileName);
         }
         splitWords.erase(0, length + space_delimiter.length());
     }
 }
 
-bool DocumentParser::isStopWord(string currentWord) {
+bool DocumentParser::isStopWord(const string &currentWord) {
+    map<string, int>::iterator it;    // https://www.cplusplus.com/reference/map/map/find/
+    it = stopWords.find(currentWord);
+    if (it == stopWords.end()) {    // if it's not in the map, add the word
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+void DocumentParser::readStopWords() {
     ifstream keywordFile("stopWords.txt");     // read the file
     if (!keywordFile.is_open()) {
         cout << "Could not open file.";
@@ -72,11 +79,11 @@ bool DocumentParser::isStopWord(string currentWord) {
         // needing to remove '\r' because I don't know what or why that keeps popping up
         // it's preventing the comparison between currentWord and stopWord
         stopWord.erase(remove(stopWord.begin(), stopWord.end(), '\r'), stopWord.end());
-        if (currentWord == stopWord) {      // if currentWord == stopWord
-            keywordFile.close();
-            return true;        // return true
-        }
+        stopWords.insert(pair<string, int> (stopWord, 1));
     }
     keywordFile.close();
-    return false;
+}
+
+void DocumentParser::printTree() {
+    handler.traverse();
 }

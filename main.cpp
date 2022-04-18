@@ -1,16 +1,32 @@
 #include <iostream>
 #include "DocumentParser.h"
-#include "AVLTree.h"
+#include "IndexHandler.h"
 
-int main() {
-//    string word = "baked";
-//    Porter2Stemmer::stem(word);
-//    cout << word << endl << endl;
-
-
-     DocumentParser file("blogs_0000001.json");
-     file.indexTree.inOrderTraversal();
-
+int main(int argc, char** argv) {
+    if (argc == 1) {        // argc = argument count
+        cout << "Error: No file inserted." << endl;
+        return  -1;
+    }
+    else {
+        // https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
+        DIR *dir; struct dirent *diread;
+        DocumentParser docParser;
+        if ((dir = opendir(argv[1])) != nullptr) {
+            while ((diread = readdir(dir)) != nullptr) {
+                string file = string(diread->d_name);
+                if ((file != "..") && file != ".") {
+                    string fileName = string(argv[1]) + "/" + string(diread->d_name);
+                    docParser.parse(fileName);
+                }
+            }
+            closedir (dir);
+        } else {
+            perror ("opendir");
+            return EXIT_FAILURE;
+        }
+        docParser.printTree();
+        return EXIT_SUCCESS;
+    }
     //AVLTree<int, int> intTree;
 
     // insert 10 integers to AVLTree

@@ -12,7 +12,9 @@
 #include <string>
 #include "include/rapidjson/document.h"
 #include "Porter2_Stemmer.h"
-#include "AVLTree.h"
+#include <dirent.h>
+#include "IndexHandler.h"
+#include <map>
 
 using std::cout;
 using std::cin;
@@ -21,21 +23,21 @@ using std::ifstream;
 using std::ostream;
 using std::remove;
 using std::vector;
+using std::pair;
+using std::map;
 using std::endl;
 
 class DocumentParser {
-//private:
-    //AVLTree<string, vector<string>> indexTree;
+private:
+    IndexHandler handler;
+    map<string, int> stopWords;
 
 public:
-    AVLTree<string, vector<string>> indexTree;
-    std::vector<string> blogWords;
-
-    DocumentParser(string);
-    void parser(string);
-    bool isStopWord(string);
-
-
+    DocumentParser();
+    void parse(const string&);
+    bool isStopWord(const string&);
+    void readStopWords();
+    void printTree();
 
 };
 
