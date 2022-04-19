@@ -47,7 +47,7 @@ template<typename key, typename value>
 class AVLTree {
 private:
     AVLNode<key, value> *rootPtr{nullptr};
-    // performs traversal of tree                            recursively
+    // performs traversal of tree recursively
     value& privateInsertNode(const key& kData, AVLNode<key, value> *&currentNode) {
         if (currentNode == nullptr) {  // if currentNode is a leaf node *CHECK IF NULLPTR*
             currentNode = new AVLNode<key, value>(kData, nullptr, nullptr);     // leaf node
@@ -71,19 +71,20 @@ private:
             return currentNode->valData;        // if duplicate, return the currentNode's data
         }
     }
+    // find the word recursively
     value& privateFindNode(const key& kData, AVLNode<key, value> *&currentNode) {
-        if (currentNode == nullptr) {
-            cout << "Error: Word is not found." << endl;
+        if (currentNode == nullptr) {       // if the currentNode is nullptr, continue
+            cout << "Error: Word is not found." << endl;        // Error message when word is not found
             return rootPtr->valData;
         }
-        else if (kData < currentNode->keyData) {
-            return privateFindNode(kData, currentNode->leftPtr);
+        else if (kData < currentNode->keyData) {        // if kData is < than the currentNode's data
+            return privateFindNode(kData, currentNode->leftPtr);        // return the data from the left side
         }
-        else if (kData > currentNode->keyData) {
-            return privateFindNode(kData, currentNode->rightPtr);
+        else if (kData > currentNode->keyData) {        // if kData is > than the currentNode's data
+            return privateFindNode(kData, currentNode->rightPtr);       // return the data from the right side
         }
         else {
-            return currentNode->valData;
+            return currentNode->valData;        // else, return the data if it's a duplicate
         }
     }
     // to balance, find the difference between the height of leftPtr and rightPtr
