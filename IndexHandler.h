@@ -25,6 +25,7 @@ public:
     // create an insert function that stores the word and doc into my AVLTree
     void insert(string, string);
     void traverse();
+    vector<string> find(const string&);
 
 };
 

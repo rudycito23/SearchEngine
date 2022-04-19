@@ -25,16 +25,16 @@ void DocumentParser::parse(const string &fileName) {            // parser functi
     // call parse on the string
     doc.Parse (wholeFile.c_str());          // covert the whole file to const char*
     // make sure the parsing worked
-    if (doc.IsObject ()) cout << "ITS AN OBJECT" << endl << endl;
+    // if (doc.IsObject ()) cout << "ITS AN OBJECT" << endl << endl;
     // loop over all the values of array
-    for (auto &v : doc["entities"]["persons"].GetArray ()) {
-        cout << "Person(s): " <<  v["name"].GetString() << endl;        // prints Person's name
-    }
-    for (auto &v : doc["entities"]["organizations"].GetArray ()) {
-        cout << "Organization(s): " <<  v["name"].GetString() << endl;      // prints Organization's name
-    }
+    // for (auto &v : doc["entities"]["persons"].GetArray ()) {
+        //cout << "Person(s): " <<  v["name"].GetString() << endl;        // prints Person's name
+    //}
+    // for (auto &v : doc["entities"]["organizations"].GetArray ()) {
+        //cout << "Organization(s): " <<  v["name"].GetString() << endl;      // prints Organization's name
+    //}
     string splitWords = doc["text"].GetString();
-    cout << "Words: " << splitWords << endl;         // prints the words from the actual blog
+    //cout << "Words: " << splitWords << endl;         // prints the words from the actual blog
 
     string space_delimiter = " ";           // space is the delimiter
     size_t length = 0;     // size_t assures the position will never be negative
@@ -59,6 +59,38 @@ void DocumentParser::parse(const string &fileName) {            // parser functi
     }
 }
 
+void DocumentParser::parseFolder(const string &directory) {
+    // https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
+    for (const auto & entry : std::filesystem::recursive_directory_iterator(directory)){
+        if (entry.is_regular_file()) {
+            if (entry.path().extension().string() == ".json") {
+                string filename = entry.path().c_str();
+                //cout << filename << std::endl;
+                parse(filename);
+            }
+        }
+    }
+
+    //DIR *dir; struct dirent *diread;
+    /*
+    if ((dir = opendir(argv[1])) != nullptr) {
+        while ((diread = readdir(dir)) != nullptr) {
+            string file = string(diread->d_name);
+            if ((file != "..") && file != ".") {
+                string fileName = string(argv[1]) + "/" + string(diread->d_name);
+                docParser.parse(fileName);
+            }
+        }
+        closedir (dir);
+    } else {
+        perror ("opendir");
+        return EXIT_FAILURE;
+    }
+    docParser.printTree();
+    return EXIT_SUCCESS;
+*/
+}
+
 bool DocumentParser::isStopWord(const string &currentWord) {
     map<string, int>::iterator it;    // https://www.cplusplus.com/reference/map/map/find/
     it = stopWords.find(currentWord);
@@ -69,8 +101,9 @@ bool DocumentParser::isStopWord(const string &currentWord) {
         return true;
     }
 }
+
 void DocumentParser::readStopWords() {
-    ifstream keywordFile("stopWords.txt");     // read the file
+    ifstream keywordFile("../stopWords.txt");     // read the file
     if (!keywordFile.is_open()) {
         cout << "Could not open file.";
     }
@@ -86,4 +119,16 @@ void DocumentParser::readStopWords() {
 
 void DocumentParser::printTree() {
     handler.traverse();
+}
+
+vector<string> DocumentParser::findDocuments(string &findKey) {
+    string lowerCaseLetters;
+    for (auto& character : findKey) {       // convert strings to lower case
+        character = tolower(character);
+        if ((character >= 'a') && (character <= 'z')) {
+            lowerCaseLetters = lowerCaseLetters + character;    // include only characters from a-z
+        }
+    }
+    Porter2Stemmer::stem(lowerCaseLetters);
+    return handler.find(lowerCaseLetters);
 }

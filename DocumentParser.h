@@ -15,6 +15,7 @@
 #include <dirent.h>
 #include "IndexHandler.h"
 #include <map>
+#include <filesystem>
 
 using std::cout;
 using std::cin;
@@ -26,6 +27,7 @@ using std::vector;
 using std::pair;
 using std::map;
 using std::endl;
+namespace fs = std::filesystem;
 
 class DocumentParser {
 private:
@@ -35,11 +37,11 @@ private:
 public:
     DocumentParser();
     void parse(const string&);
+    void parseFolder(const string&);
     bool isStopWord(const string&);
     void readStopWords();
     void printTree();
-
+    vector<string> findDocuments(string&);
 };
-
 
 #endif //INC_22S_FINAL_PROJ_DOCUMENTPARSER_H

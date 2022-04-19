@@ -14,3 +14,7 @@ void IndexHandler::insert(string word,  string doc) {
 void IndexHandler::traverse() {     // print the tree inorder
     indexTree.inOrderTraversal();
 }
+
+vector<string> IndexHandler::find(const string &findKey) {
+    return indexTree.findNode(findKey);
+}

@@ -71,6 +71,21 @@ private:
             return currentNode->valData;        // if duplicate, return the currentNode's data
         }
     }
+    value& privateFindNode(const key& kData, AVLNode<key, value> *&currentNode) {
+        if (currentNode == nullptr) {
+            cout << "Error: Word is not found." << endl;
+            return rootPtr->valData;
+        }
+        else if (kData < currentNode->keyData) {
+            return privateFindNode(kData, currentNode->leftPtr);
+        }
+        else if (kData > currentNode->keyData) {
+            return privateFindNode(kData, currentNode->rightPtr);
+        }
+        else {
+            return currentNode->valData;
+        }
+    }
     // to balance, find the difference between the height of leftPtr and rightPtr
     void balanceTree(AVLNode<key, value> *&currentNode) {
         if (currentNode == nullptr) {
@@ -111,7 +126,7 @@ public:
     // calling .insertNode in main, will then trigger calling privateInsertNode which will
     // traverse the tree recursively
     value& insertNode(const key& kData) {
-        privateInsertNode(kData, rootPtr);  // return privateInsertNode
+        return privateInsertNode(kData, rootPtr);  // return privateInsertNode
     }
     // calculate the height
     int getHeight(AVLNode<key, value> *aNode) {
@@ -162,6 +177,9 @@ public:
         }
         // else, (height of checkNode's leftPtr) - (height of checkNode's rightPtr) = height
         return getHeight(checkNode->leftPtr) - getHeight(checkNode->rightPtr);
+    }
+    value& findNode(const key& kData) {
+        return privateFindNode(kData, rootPtr);
     }
 
     // print inorder traversal

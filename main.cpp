@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DocumentParser.h"
+#include <chrono>
 #include "IndexHandler.h"
 
 int main(int argc, char** argv) {
@@ -8,24 +9,18 @@ int main(int argc, char** argv) {
         return  -1;
     }
     else {
-        // https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
-        DIR *dir; struct dirent *diread;
         DocumentParser docParser;
-        if ((dir = opendir(argv[1])) != nullptr) {
-            while ((diread = readdir(dir)) != nullptr) {
-                string file = string(diread->d_name);
-                if ((file != "..") && file != ".") {
-                    string fileName = string(argv[1]) + "/" + string(diread->d_name);
-                    docParser.parse(fileName);
-                }
-            }
-            closedir (dir);
-        } else {
-            perror ("opendir");
-            return EXIT_FAILURE;
+        auto start = std::chrono::high_resolution_clock::now();
+        docParser.parseFolder(argv[1]);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+        cout << time << " seconds" << endl;
+        string keyName = argv[2];
+        vector<string> results = docParser.findDocuments(keyName);
+        cout << "Your word appears in the following files: " << endl;
+        for (auto const &x:results) {
+            cout << x << endl;
         }
-        docParser.printTree();
-        return EXIT_SUCCESS;
     }
     //AVLTree<int, int> intTree;
 
@@ -42,8 +37,5 @@ int main(int argc, char** argv) {
 //    intTree.insertNode(-5);
 //    //}
 //    intTree.inOrderTraversal();
-
-
-
     return 0;
 }
