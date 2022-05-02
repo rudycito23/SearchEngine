@@ -8,7 +8,7 @@ DocumentParser::DocumentParser() {
     readStopWords();
 }
 
-void DocumentParser::parse(const string &fileName) {            // parser function
+void DocumentParser::parse(const string &fileName, IndexHandler &handler) {            // parser function
     // declare the document object
     rapidjson::Document doc;
 
@@ -27,12 +27,20 @@ void DocumentParser::parse(const string &fileName) {            // parser functi
     // make sure the parsing worked
     // if (doc.IsObject ()) cout << "ITS AN OBJECT" << endl << endl;
     // loop over all the values of array
-    // for (auto &v : doc["entities"]["persons"].GetArray ()) {
-        //cout << "Person(s): " <<  v["name"].GetString() << endl;        // prints Person's name
-    //}
-    // for (auto &v : doc["entities"]["organizations"].GetArray ()) {
-        //cout << "Organization(s): " <<  v["name"].GetString() << endl;      // prints Organization's name
-    //}
+     for (auto &v : doc["entities"]["persons"].GetArray ()) {
+         string kDataPerson = v.GetObject().begin()->value.GetString();     // convert Persons to strings
+         for (int i = 0; i < kDataPerson.size(); ++i) {
+             kDataPerson[i] = tolower(kDataPerson[i]);      // convert Person to lowercase letters
+         }
+         handler.insertPerson(kDataPerson, fileName);       // inserting to AVLTree for Persons
+     }
+     for (auto &v : doc["entities"]["organizations"].GetArray ()) {
+         string kDataOrg = v.GetObject().begin()->value.GetString();        // convert Orgs to strings
+         for (int i = 0; i < kDataOrg.size(); ++i) {
+             kDataOrg[i] = tolower(kDataOrg[i]);        // convert Orgs to lowercase letters
+         }
+         handler.insertOrg(kDataOrg, fileName);     // insert to AVLTree for Orgs
+    }
     string splitWords = doc["text"].GetString();
     //cout << "Words: " << splitWords << endl;         // prints the words from the actual blog
 
@@ -53,20 +61,20 @@ void DocumentParser::parse(const string &fileName) {            // parser functi
             // blogWords.push_back(lowerCaseLetters);          // push the currentWord into the blogWords vector
             // if pass AVLTree here, pass by reference
             // TODO - don't hard code the file
-            handler.insert(lowerCaseLetters, fileName);
+            handler.insertWord(lowerCaseLetters, fileName);
         }
         splitWords.erase(0, length + space_delimiter.length());
     }
 }
 
-void DocumentParser::parseFolder(const string &directory) {
+void DocumentParser::parseFolder(const string &directory, IndexHandler &handler) {
     // https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
     for (const auto & entry : std::filesystem::recursive_directory_iterator(directory)){
         if (entry.is_regular_file()) {
             if (entry.path().extension().string() == ".json") {
                 string filename = entry.path().c_str();
                 //cout << filename << std::endl;
-                parse(filename);
+                parse(filename, handler);
             }
         }
     }
@@ -117,11 +125,11 @@ void DocumentParser::readStopWords() {
     keywordFile.close();
 }
 
-void DocumentParser::printTree() {
-    handler.traverse();
+void DocumentParser::printTree(IndexHandler &indexHandler) {
+    indexHandler.traverse();
 }
 
-vector<string> DocumentParser::findDocuments(string &findKey) {
+vector<string> DocumentParser::findDocuments(string &findKey, IndexHandler &indexHandler) {
     string lowerCaseLetters;
     for (auto& character : findKey) {       // convert strings to lower case
         character = tolower(character);
@@ -130,5 +138,5 @@ vector<string> DocumentParser::findDocuments(string &findKey) {
         }
     }
     Porter2Stemmer::stem(lowerCaseLetters);
-    return handler.find(lowerCaseLetters);
+    return indexHandler.findWord(lowerCaseLetters);
 }

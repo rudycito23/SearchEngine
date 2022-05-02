@@ -9,6 +9,7 @@
 #include <string>
 #include "AVLTree.h"
 #include <vector>
+#include "Porter2_Stemmer.h"
 
 using std::string;
 using std::cout;
@@ -18,14 +19,20 @@ using std::endl;
 
 class IndexHandler {
 private:
-    AVLTree<string, vector<string>> indexTree;
+    AVLTree<string, vector<string>> invertedFileWordIndex;
+    AVLTree<string, vector<string>> invertedFileOrgIndex;
+    AVLTree<string, vector<string>> invertedFilePersonIndex;
 
 public:
     IndexHandler();
     // create an insert function that stores the word and doc into my AVLTree
-    void insert(string, string);
+    void insertWord(string, string);
+    void insertPerson(string, string);
+    void insertOrg(string, string);
     void traverse();
-    vector<string> find(const string&);
+    vector<string> findWord(string);
+    vector<string> findOrg(string);
+    vector<string> findPerson(string);
 
 };
 

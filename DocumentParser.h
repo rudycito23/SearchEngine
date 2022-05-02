@@ -31,17 +31,16 @@ namespace fs = std::filesystem;
 
 class DocumentParser {
 private:
-    IndexHandler handler;
     map<string, int> stopWords;
 
 public:
     DocumentParser();
-    void parse(const string&);
-    void parseFolder(const string&);
+    void parse(const string&, IndexHandler&);
+    void parseFolder(const string&, IndexHandler&);
     bool isStopWord(const string&);
     void readStopWords();
-    void printTree();
-    vector<string> findDocuments(string&);
+    void printTree(IndexHandler&);
+    vector<string> findDocuments(string&, IndexHandler&);
 };
 
 #endif //INC_22S_FINAL_PROJ_DOCUMENTPARSER_H
