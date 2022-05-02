@@ -19,9 +19,9 @@ using std::endl;
 
 class IndexHandler {
 private:
-    AVLTree<string, vector<string>> invertedFileWordIndex;
-    AVLTree<string, vector<string>> invertedFileOrgIndex;
-    AVLTree<string, vector<string>> invertedFilePersonIndex;
+    AVLTree<string, vector<string>> invertedFileWordIndex;      // this is the inverted file index for Words
+    AVLTree<string, vector<string>> invertedFileOrgIndex;       // this is the inverted file index for ORG
+    AVLTree<string, vector<string>> invertedFilePersonIndex;    // this is the inverted file index for PERSON
 
 public:
     IndexHandler();
