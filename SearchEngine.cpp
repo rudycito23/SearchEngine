@@ -16,18 +16,15 @@ void SearchEngine::parseData() {
 }
 
 void SearchEngine::executeSearch(const string &search) {
-//    vector<string> result = processor.processQuery(search, handler);
-//    for (int i = 0; i < result.size(); ++i) {
-//        cout << result[i] << endl;
-//    }
+        processor.processQuery(search, handler);
 }
 
 void SearchEngine::printMenu() {
-//    cout << "Welcome to  A R I A " << endl << endl;
-//    cout << "What do you wish to find? " << endl;
-//
-//    string search;
-//    cin >> search;
-//    if (search = )
-//
+    cout << "Welcome to  A R I A " << endl << endl;
+    cout << "What do you wish to find? " << endl;
+
+    string search;
+    cin >> search;
+    if (search = )
+
 }

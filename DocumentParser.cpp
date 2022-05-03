@@ -155,7 +155,7 @@ vector<pair<string, int>> DocumentParser::rankRelevancy(const vector<string> &us
                 Porter2Stemmer::stem(lowerCaseLetters);      // remove any stemming from the word
                 // check if the individual word is a keyword from user input
                 for (int j = 0; j < userKeywords.size(); ++j) {
-                    if (lowerCaseLetters == userKeywords[i]) {      // if it is a user keyword increase the counter
+                    if (lowerCaseLetters == userKeywords[j]) {      // if it is a user keyword increase the counter
                         counter++;
                     }
                 }

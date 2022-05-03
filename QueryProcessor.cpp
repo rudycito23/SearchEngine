@@ -37,7 +37,7 @@ void QueryProcessor::processQuery(const string &userQuery, IndexHandler &handler
         }
         else {
             for (int i = 0; i < currentWord.size(); ++i) {
-                currentWord = tolower(currentWord[i]);
+                currentWord[i] = tolower(currentWord[i]);
             }
             Porter2Stemmer::stem(currentWord);      // remove any stemming from the word
             vector<string> tempResult;      // vector that contains the result
@@ -109,8 +109,24 @@ vector<string> QueryProcessor::combineVectors(vector<string> vector1, vector<str
 
     return vector3;     // return vector3 after combining vector1 & vector2
 }
+
+// https://www.geeksforgeeks.org/sorting-vector-of-pairs-in-c-set-1-sort-by-first-and-second/
+// sort vectors by the second element
+bool sortBySecondElement(const pair<string,int> &pair1, const pair<string,int> &pair2)
+{
+    return (pair1.second > pair2.second);
+}
 // calls parser to reopen documents and count and rank relevancy of the documents
 void QueryProcessor::rankAndReorder(vector<string> &results) {
     DocumentParser parser;
+    // call the rankRelevancy function from DocumentParser
+    // to display how many times the key appears in the document
     vector<pair<string, int>> rankedDocs = parser.rankRelevancy(userKeywords, results);
+    sort(rankedDocs.begin(), rankedDocs.end(), sortBySecondElement);
+
+    int howManyToPrint = min(15,(int)rankedDocs.size());    // print a maximum of 15 results
+    for (int i = 0; i < howManyToPrint; ++i) {
+        // first = string and second = counter
+        cout << rankedDocs[i].first << " " << rankedDocs[i].second << endl;
+    }
 }

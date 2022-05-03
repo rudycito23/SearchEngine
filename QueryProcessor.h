@@ -12,6 +12,8 @@
 
 using std::stringstream;
 using std::vector;
+using std::sort;
+using std:: min;
 
 class QueryProcessor {
 private:
