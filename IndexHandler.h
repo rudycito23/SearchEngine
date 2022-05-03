@@ -30,6 +30,9 @@ public:
     void insertPerson(string, string);
     void insertOrg(string, string);
     void traverse();
+    int getWordSize();
+    int getOrgSize();
+    int getPersonSize();
     vector<string> findWord(string);
     vector<string> findOrg(string);
     vector<string> findPerson(string);

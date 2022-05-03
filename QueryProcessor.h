@@ -8,6 +8,7 @@
 #include "IndexHandler.h"
 #include <sstream>
 #include <algorithm>
+#include <chrono>
 #include "DocumentParser.h"
 
 using std::stringstream;

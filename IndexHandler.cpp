@@ -25,8 +25,8 @@ vector<string> IndexHandler::findWord(string findWordKey) {      // find the key
     }
     Porter2Stemmer::stem(lowerCaseLetters);
     return invertedFileWordIndex.findNode(lowerCaseLetters);     // return the key
-
 }
+
 vector<string> IndexHandler::findOrg(string findOrgKey) {
     string lowerCaseLetters;
     for (auto& character : findOrgKey) {       // convert strings to lower case
@@ -57,4 +57,16 @@ void IndexHandler::insertPerson(string person, string doc) {
 
 void IndexHandler::insertOrg(string org, string doc) {
     invertedFileOrgIndex.insertNode(org).emplace_back(doc);
+}
+
+int IndexHandler::getWordSize() {
+    return invertedFileWordIndex.getWordCounter();
+}
+
+int IndexHandler::getOrgSize() {
+    return invertedFileOrgIndex.getWordCounter();
+}
+
+int IndexHandler::getPersonSize() {
+    return invertedFilePersonIndex.getWordCounter();
 }

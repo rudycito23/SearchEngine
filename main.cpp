@@ -1,6 +1,5 @@
 #include <iostream>
 #include "DocumentParser.h"
-#include <chrono>
 #include "IndexHandler.h"
 #include "SearchEngine.h"
 

@@ -34,11 +34,13 @@ namespace fs = std::filesystem;
 class DocumentParser {
 private:
     map<string, int> stopWords;
+    int totalOfIndexedDocs;
 
 public:
     DocumentParser();
     void parse(const string&, IndexHandler&);
     void parseFolder(const string&, IndexHandler&);
+    int getTotalOfIndexedDocs();
     bool isStopWord(const string&);
     void readStopWords();
     void printTree(IndexHandler&);

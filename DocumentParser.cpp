@@ -76,10 +76,14 @@ void DocumentParser::parseFolder(const string &directory, IndexHandler &handler)
             if (entry.path().extension().string() == ".json") {
                 string filename = entry.path().c_str();
                 parse(filename, handler);
+                totalOfIndexedDocs++;
             }
         }
     }
     cout << endl;
+}
+int DocumentParser::getTotalOfIndexedDocs() {
+    return totalOfIndexedDocs;
 }
 
 bool DocumentParser::isStopWord(const string &currentWord) {

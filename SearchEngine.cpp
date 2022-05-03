@@ -23,7 +23,10 @@ void SearchEngine::printMenu() {
         cout << "Type \"stop\" to quit. " << endl;
 
         getline(cin ,search);
-
         processor.processQuery(search, handler);
+        cout << "The number of articles indexed = " << parser.getTotalOfIndexedDocs() << endl;
+        cout << "The number of WORD(S) indexed = " << handler.getWordSize() << endl;
+        cout << "The number of ORG(S) indexed = " << handler.getOrgSize() << endl;
+        cout << "The number of PERSON(S) indexed = " << handler.getPersonSize() << endl << endl;
     }
 }

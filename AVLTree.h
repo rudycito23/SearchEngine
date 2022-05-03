@@ -46,6 +46,7 @@ template<typename key, typename value>
 
 class AVLTree {
 private:
+    int wordCounter{0};
     AVLNode<key, value> *rootPtr{nullptr};
     // performs traversal of tree recursively
     value& privateInsertNode(const key& kData, AVLNode<key, value> *&currentNode) {
@@ -127,7 +128,11 @@ public:
     // calling .insertNode in main, will then trigger calling privateInsertNode which will
     // traverse the tree recursively
     value& insertNode(const key& kData) {
+        wordCounter++;
         return privateInsertNode(kData, rootPtr);  // return privateInsertNode
+    }
+    int getWordCounter() {
+        return wordCounter;
     }
     // calculate the height
     int getHeight(AVLNode<key, value> *aNode) {

@@ -19,6 +19,7 @@ void QueryProcessor::processQuery(const string &userQuery, IndexHandler &handler
     // ORG = -1
     // PERSON = 1
     int indicator{0};
+    auto start = std::chrono::high_resolution_clock::now();
     while (ss >> currentWord) {
         if (currentWord == "AND") {     // if the word = AND
             operand = 1;
@@ -34,6 +35,9 @@ void QueryProcessor::processQuery(const string &userQuery, IndexHandler &handler
         }
         else if (currentWord == "PERSON") {     // if the word = PERSON
             indicator = 1;
+        }
+        else if (currentWord == "stop") {       // if the word = stop
+            break;
         }
         else {
             for (int i = 0; i < currentWord.size(); ++i) {
@@ -76,6 +80,8 @@ void QueryProcessor::processQuery(const string &userQuery, IndexHandler &handler
         }
     }
     rankAndReorder(result);      // returning the rankAndReorder()
+    auto end = std::chrono::high_resolution_clock::now();
+    auto time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
 }
 
 // Step 1: find the current word
@@ -121,6 +127,10 @@ void QueryProcessor::rankAndReorder(vector<string> &results) {
     DocumentParser parser;
     // call the rankRelevancy function from DocumentParser
     // to display how many times the key appears in the document
+    if (results.empty()) {
+        cout << "No results found.  Try another search." << endl << endl;
+        return;
+    }
     vector<pair<string, int>> rankedDocs = parser.rankRelevancy(userKeywords, results);
     sort(rankedDocs.begin(), rankedDocs.end(), sortBySecondElement);
 
@@ -130,7 +140,7 @@ void QueryProcessor::rankAndReorder(vector<string> &results) {
         cout << "Article #" << i + 1 << endl;
         parser.showContent(rankedDocs[i].first);
         cout << endl << endl;
-        //cout << rankedDocs[i].first << " " << rankedDocs[i].second << endl;
+        cout << "Your query took " << time << " second(s) to complete." << endl << endl;
     }
 
     cout << "What article would you like to read?" << endl;
