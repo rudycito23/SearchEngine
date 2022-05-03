@@ -24,14 +24,14 @@ void DocumentParser::parse(const string &fileName, IndexHandler &handler) {     
     streamy.close ();
     // call parse on the string
     doc.Parse (wholeFile.c_str());          // covert the whole file to const char*
-     for (auto &v : doc["persons"].GetArray ()) {
+     for (auto &v : doc["entities"]["persons"].GetArray ()) {
          string kDataPerson = v.GetObject().begin()->value.GetString();     // convert Persons to strings
          for (int i = 0; i < kDataPerson.size(); ++i) {
              kDataPerson[i] = tolower(kDataPerson[i]);      // convert Person to lowercase letters
          }
          handler.insertPerson(kDataPerson, fileName);       // inserting to AVLTree for Persons
      }
-     for (auto &v : doc["organizations"].GetArray ()) {
+     for (auto &v : doc["entities"]["organizations"].GetArray ()) {
          string kDataOrg = v.GetObject().begin()->value.GetString();        // convert Orgs to strings
          for (int i = 0; i < kDataOrg.size(); ++i) {
              kDataOrg[i] = tolower(kDataOrg[i]);        // convert Orgs to lowercase letters
@@ -42,7 +42,7 @@ void DocumentParser::parse(const string &fileName, IndexHandler &handler) {     
     string space_delimiter = " ";           // space is the delimiter
     size_t length = 0;     // size_t assures the position will never be negative
     while ((length = splitWords.find(space_delimiter)) != string::npos) {
-        //currentWord is the first character encountered and its length which ends when encountering a space
+        // currentWord is the first character encountered and its length which ends when encountering a space
         string currentWord = splitWords.substr(0, length);
         string lowerCaseLetters = "";
         for (auto& character : currentWord) {       // convert strings to lower case
@@ -62,15 +62,24 @@ void DocumentParser::parse(const string &fileName, IndexHandler &handler) {     
 
 void DocumentParser::parseFolder(const string &directory, IndexHandler &handler) {
     // https://www.delftstack.com/howto/cpp/how-to-get-list-of-files-in-a-directory-cpp/
-    for (const auto & entry : std::filesystem::recursive_directory_iterator(directory)){
+    int i = 1;
+    for (const auto & entry : std::filesystem::recursive_directory_iterator(directory)) {
+        if (i % 1000 == 0) {
+            cout << ".";
+            if (i % 100000 == 0) {
+                cout << endl;
+            }
+            cout.flush();
+        }
+        i++;
         if (entry.is_regular_file()) {
             if (entry.path().extension().string() == ".json") {
                 string filename = entry.path().c_str();
-                //cout << filename << std::endl;
                 parse(filename, handler);
             }
         }
     }
+    cout << endl;
 }
 
 bool DocumentParser::isStopWord(const string &currentWord) {

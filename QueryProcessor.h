@@ -55,9 +55,5 @@ public:
     // Ranking the Result: create a relevancy ranking to return the best results.
     // Research *inverse document frequency statistic* - maybe create a point system that will
     // score documents by the number of times the word appears in the document.  Return the highest scores
-
-
 };
-
-
 #endif //INC_22S_FINAL_PROJ_QUERYPROCESSOR_H

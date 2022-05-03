@@ -8,7 +8,20 @@ int main(int argc, char** argv) {
     if (argc == 1) {        // argc = argument count
         cout << "Error: No file inserted." << endl;
         return -1;
-    } else {
+    }
+    else {
+        SearchEngine searchEngine(argv[1]);
+        searchEngine.parseData();
+        searchEngine.printMenu();
+    }
+    return 0;
+}
+
+
+
+
+
+
 //        DocumentParser docParser;
 //        auto start = std::chrono::high_resolution_clock::now();
 //        docParser.parseFolder(argv[2]);
@@ -22,12 +35,6 @@ int main(int argc, char** argv) {
 //            cout << x << endl;
 //        }
 //    }
-
-        SearchEngine searchEngine(argv[1]);
-        searchEngine.parseData();
-        searchEngine.printMenu();
-
-
 
 //    AVLTree<int, int> intTree;
 //    // **TEST** insert 10 integers to AVLTree
@@ -46,6 +53,3 @@ int main(int argc, char** argv) {
 //
 //        return 0;
 //    }
-    }
-    return 0;
-}

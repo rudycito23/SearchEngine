@@ -17,9 +17,6 @@ private:
     QueryProcessor processor;
     string fileName;
 
-//    void parseData();
-//    void executeSearch(const string&);
-
 public:
     SearchEngine();
     SearchEngine(string);
@@ -27,6 +24,4 @@ public:
 
     void parseData();
 };
-
-
 #endif //INC_22S_FINAL_PROJ_SEARCHENGINE_H
