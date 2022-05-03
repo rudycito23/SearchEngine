@@ -23,9 +23,9 @@ int main(int argc, char** argv) {
 //        }
 //    }
 
-        SearchEngine searchEngine("../size-6000");
+        SearchEngine searchEngine(argv[1]);
         searchEngine.parseData();
-        searchEngine.executeSearch("AND money shares");
+        searchEngine.printMenu();
 
 
 

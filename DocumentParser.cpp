@@ -172,5 +172,51 @@ vector<pair<string, int>> DocumentParser::rankRelevancy(const vector<string> &us
     }   // the end for every document
     return results;
 }
+// reopen the files
+void DocumentParser::showContent(const string &fileName) {
+    rapidjson::Document doc;
+    ifstream streamy(fileName);
+    // put the whole file's data into wholeFile
+    string wholeFile;
+    string temp;
+    while (getline(streamy, temp)) {
+        wholeFile += temp;
+    }
+    streamy.close();
 
+    doc.Parse(wholeFile.c_str());          // covert the whole file to const char*
+    string splitWordsTitle = doc["title"].GetString();  // look in the "title" section
+    cout << "   Article Title: " << splitWordsTitle << endl;
+    string splitWordsPub = doc["thread"]["site"].GetString();   // look in the "thread and site" section
+    cout << "   Publication: " << splitWordsPub << endl;
+    string splitWordsPublished = doc["published"].GetString();  // look in the "published" section
+    cout << "   Published Date: " << splitWordsPublished << endl;
+    string splitWordsText = doc["text"].GetString();    // look in the "text" section
 
+    string space_delimiter = " ";
+    cout << "   Text: ";
+    for (int i = 0; i < 50; ++i) {      // iterate through 50 words
+        if(splitWordsText.empty()) {
+            break;
+        }
+        size_t length = splitWordsText.find(space_delimiter);           // space is the delimiter
+        string currentWord = splitWordsText.substr(0, length);
+        cout << currentWord << " ";     // will print up to 50 words
+        splitWordsText.erase(0, length + space_delimiter.length());
+    }
+}
+void DocumentParser::printArticle(const string &fileName) {
+    rapidjson::Document doc;
+    ifstream streamy(fileName);
+    // put the whole file's data into wholeFile
+    string wholeFile;
+    string temp;
+    while (getline(streamy, temp)) {
+        wholeFile += temp;
+    }
+    streamy.close();
+
+    doc.Parse(wholeFile.c_str());          // covert the whole file to const char*
+    string splitWordsText = doc["text"].GetString();    // look in the "text" section
+    cout << "   Text: " << splitWordsText << endl;      // print the whole article
+}

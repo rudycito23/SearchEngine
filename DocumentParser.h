@@ -44,6 +44,8 @@ public:
     void printTree(IndexHandler&);
     vector<pair<string, int>> rankRelevancy(const vector<string> &, vector<string> &);
     vector<string> findDocuments(string&, IndexHandler&);
+    void showContent(const string &);
+    void printArticle(const string &);
 };
 
 #endif //INC_22S_FINAL_PROJ_DOCUMENTPARSER_H

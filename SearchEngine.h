@@ -26,7 +26,6 @@ public:
     void printMenu();
 
     void parseData();
-    void executeSearch(const string&);
 };
 
 

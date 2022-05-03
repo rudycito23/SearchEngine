@@ -127,6 +127,21 @@ void QueryProcessor::rankAndReorder(vector<string> &results) {
     int howManyToPrint = min(15,(int)rankedDocs.size());    // print a maximum of 15 results
     for (int i = 0; i < howManyToPrint; ++i) {
         // first = string and second = counter
-        cout << rankedDocs[i].first << " " << rankedDocs[i].second << endl;
+        cout << "Article #" << i + 1 << endl;
+        parser.showContent(rankedDocs[i].first);
+        cout << endl << endl;
+        //cout << rankedDocs[i].first << " " << rankedDocs[i].second << endl;
+    }
+
+    cout << "What article would you like to read?" << endl;
+    string userChoice;
+    getline(cin, userChoice);
+    if ((stoi(userChoice) < 1) || (stoi(userChoice) > howManyToPrint)) {    // stoi = string to int conversion
+        cout << "Invalid entry." << endl;
+    }
+    else {
+        // call printArticle from DocumentParser
+        parser.printArticle(rankedDocs[stoi(userChoice) - 1].first);
+        cout << endl;
     }
 }
