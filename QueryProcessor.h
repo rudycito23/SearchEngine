@@ -8,13 +8,18 @@
 #include "IndexHandler.h"
 #include <sstream>
 #include <algorithm>
+#include "DocumentParser.h"
 
 using std::stringstream;
 using std::vector;
 
 class QueryProcessor {
+private:
+    vector<string> userKeywords;
+
 public:
-    vector<string> processQuery(const string&, IndexHandler);
+    void processQuery(const string&, IndexHandler&);
+    void rankAndReorder(vector<string>&);
     vector<string> intersection(vector<string> &, vector<string> &);
     void deleteVector(vector<string> &, vector<string>);
     vector<string> combineVectors(vector<string>, vector<string>);

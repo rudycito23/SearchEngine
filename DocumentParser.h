@@ -16,6 +16,7 @@
 #include "IndexHandler.h"
 #include <map>
 #include <filesystem>
+#include <utility>
 
 using std::cout;
 using std::cin;
@@ -26,6 +27,7 @@ using std::remove;
 using std::vector;
 using std::pair;
 using std::map;
+using std::pair;
 using std::endl;
 namespace fs = std::filesystem;
 
@@ -40,6 +42,7 @@ public:
     bool isStopWord(const string&);
     void readStopWords();
     void printTree(IndexHandler&);
+    vector<pair<string, int>> rankRelevancy(const vector<string> &, vector<string> &);
     vector<string> findDocuments(string&, IndexHandler&);
 };
 

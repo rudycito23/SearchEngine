@@ -5,7 +5,7 @@
 #include "QueryProcessor.h"
 
 // how to process the user's query
-vector<string> QueryProcessor::processQuery(const string &userQuery, IndexHandler handler) {
+void QueryProcessor::processQuery(const string &userQuery, IndexHandler &handler) {
     string currentWord;                 // Have a buffer string
     stringstream ss(userQuery);       // Insert the string into a stream
     vector<std::string> result; // Create vector to hold our words
@@ -36,6 +36,10 @@ vector<string> QueryProcessor::processQuery(const string &userQuery, IndexHandle
             indicator = 1;
         }
         else {
+            for (int i = 0; i < currentWord.size(); ++i) {
+                currentWord = tolower(currentWord[i]);
+            }
+            Porter2Stemmer::stem(currentWord);      // remove any stemming from the word
             vector<string> tempResult;      // vector that contains the result
             if (indicator == 0) {      // if the user's query is a single keyword,
                 // then call the handler to find the word and store it in tempResult vector
@@ -50,6 +54,8 @@ vector<string> QueryProcessor::processQuery(const string &userQuery, IndexHandle
                 tempResult = handler.findOrg(currentWord);
             }
             if (operand == 1) {         // if query contains AND, continue for next check
+                // for any AND or OR, push the currentWord into the userKeywords vector
+                userKeywords.push_back(currentWord);
                 if (result.empty()) {   // if the result is empty,
                     result = tempResult;    // store the tempResult in result
                 }
@@ -58,6 +64,7 @@ vector<string> QueryProcessor::processQuery(const string &userQuery, IndexHandle
                 }
             }
             else if (operand == 0) {        // if the query contains OR,
+                userKeywords.push_back(currentWord);
                 // call the combineVectors function and store it in the result vector
                 result = combineVectors(result, tempResult);
             }
@@ -68,7 +75,7 @@ vector<string> QueryProcessor::processQuery(const string &userQuery, IndexHandle
             indicator = 0;      // reset the indicator trigger
         }
     }
-    return result;      // return the result vector
+    rankAndReorder(result);      // returning the rankAndReorder()
 }
 
 // Step 1: find the current word
@@ -101,4 +108,9 @@ vector<string> QueryProcessor::combineVectors(vector<string> vector1, vector<str
     vector3.insert( vector3.end(), vector2.begin(), vector2.end() );
 
     return vector3;     // return vector3 after combining vector1 & vector2
+}
+// calls parser to reopen documents and count and rank relevancy of the documents
+void QueryProcessor::rankAndReorder(vector<string> &results) {
+    DocumentParser parser;
+    vector<pair<string, int>> rankedDocs = parser.rankRelevancy(userKeywords, results);
 }
