@@ -19,7 +19,13 @@ void SearchEngine::printMenu() {
     string search;
     while (search != "stop"){
         cout << "Welcome! My name is A R I A, your search engine. " << endl << endl;
-        cout << "What do you wish to find?  Type \"stop\" to quit. " << endl << endl;
+        cout << "To search, apply the following: " << endl;
+        cout << "   To find a single keyword, enter the keyword." << endl;
+        cout << "   To find multiple keywords, enter 'AND', then enter your desired keywords." << endl;
+        cout << "   To find an organization, enter 'ORG', then the organization name." << endl;
+        cout << "   To find a person, enter 'PERSON', then the name of the person." << endl;
+        cout << "   To omit a keyword, enter 'NOT', then the keyword you wish to omit." << endl;
+        cout << "   To exit, enter \"stop\" to quit. " << endl << endl;
 
         getline(cin ,search);
         processor.processQuery(search, handler);
