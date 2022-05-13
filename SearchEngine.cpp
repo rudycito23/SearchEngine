@@ -25,7 +25,7 @@ void SearchEngine::printMenu() {
         cout << "   To find an organization, enter 'ORG', then the organization name." << endl;
         cout << "   To find a person, enter 'PERSON', then the name of the person." << endl;
         cout << "   To omit a keyword, enter 'NOT', then the keyword you wish to omit." << endl;
-        cout << "   To exit, enter \"stop\" to quit. " << endl << endl;
+        cout << "   Enter \"stop\" to quit." << endl << endl;
 
         getline(cin ,search);
         processor.processQuery(search, handler);
