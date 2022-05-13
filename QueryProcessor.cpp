@@ -19,8 +19,11 @@ void QueryProcessor::processQuery(const string &userQuery, IndexHandler &handler
     // ORG = -1
     // PERSON = 1
     int indicator{0};
-    auto start = std::chrono::high_resolution_clock::now();
+    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+    start = std::chrono::high_resolution_clock::now();
     while (ss >> currentWord) {
+        std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+        start = std::chrono::high_resolution_clock::now();
         if (currentWord == "AND") {     // if the word = AND
             operand = 1;
         }
@@ -79,11 +82,11 @@ void QueryProcessor::processQuery(const string &userQuery, IndexHandler &handler
             indicator = 0;      // reset the indicator trigger
         }
     }
+    end = std::chrono::high_resolution_clock::now();
+    auto time = std::chrono::duration<double>(end - start).count();
+    cout << "(" << time << " second(s) to complete)" << endl << endl;
     rankAndReorder(result);      // returning the rankAndReorder()
-    auto end = std::chrono::high_resolution_clock::now();
-    auto time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
 }
-
 // Step 1: find the current word
 // Step 2: find the intersection between result and tempResult
 
@@ -140,9 +143,7 @@ void QueryProcessor::rankAndReorder(vector<string> &results) {
         cout << "Article #" << i + 1 << endl;
         parser.showContent(rankedDocs[i].first);
         cout << endl << endl;
-        cout << "Your query took " << time << " second(s) to complete." << endl << endl;
     }
-
     cout << "What article would you like to read?" << endl;
     string userChoice;
     getline(cin, userChoice);
