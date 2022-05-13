@@ -1,10 +1,24 @@
-# Spring 2022 Final Project 
+# Spring 2022_Data Structures - Final Project
+# Search Engine
 
 ## Important:
 
-- You DO NOT need to implement GitHub Actions for the final project.  
-- DO NOT attempt to push the data set for this project to Github.  
-  - Make sure your data folder is in the `.gitignore` file
+Deadline for the project was approximately 4 weeks.
+
+Our final project in Data Structures was to build a search engine
+for a large collection of financial news articles from Jan - May 2018.
+
+The search engine architecture consists of the following:
+- Document parser/processor
+- Query processor
+- Search processor
+- Ranking processor
+
+User's query <--> Query Processor
+Query Engine <--> Index Handler
+Index Handler <--> Index
+Document Parser <--> Index Handler
+Financial news articles (docs) <--> Document Parser
 
 ## Links:
 
